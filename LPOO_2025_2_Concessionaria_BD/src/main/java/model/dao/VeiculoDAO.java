@@ -1,42 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import model.Cliente;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import model.Veiculo;
 
-/**
- *
- * @author vanessalagomachado
- */
-public class VeiculoDAO {
+public class VeiculoDAO extends PersistenciaJPA{
 
-    List<Veiculo> lista;
-
-    public VeiculoDAO() {
-        lista = new ArrayList<>();
+    public List<Veiculo> listaVeiculos(){
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Veiculo> query =
+                    em.createQuery("SELECT v FROM Veiculo v", Veiculo.class);
+            return query.getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
-
-    public void addVeiculo(Veiculo obj) {
-        lista.add(obj);
-    }
-
-    public void removerVeiculo(Veiculo obj) {
-        lista.remove(obj);
-    }
-
-    public List<Veiculo> listaVeiculos() {
-        return lista;
-    }
-
-    public Optional<Veiculo> buscarPorPlaca(String placa) {
-        return lista.stream()
-                .filter(p -> p.getPlaca().equals(placa))
-                .findFirst();
+    public Optional<Veiculo> buscarPorPlaca (String placa){
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Veiculo> query = em.createQuery("SELECT v FROM Veiculo v WHERE v.placa = :placa", Veiculo.class);
+            query.setParameter("placa", placa);
+            return query.getResultList().stream().findFirst();
+        }finally{
+            em.close();
+        }
     }
 }

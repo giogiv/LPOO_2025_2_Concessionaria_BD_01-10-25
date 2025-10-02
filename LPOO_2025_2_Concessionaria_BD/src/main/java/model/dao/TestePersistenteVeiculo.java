@@ -8,6 +8,7 @@ public class TestePersistenteVeiculo {
         PersistenciaJPA jpa = new PersistenciaJPA();
         if (jpa.conexaoAberta()) {
             System.out.println("✅ Conexão aberta com sucesso!");
+            
             Veiculo v = new Veiculo();
             v.setPlaca("ABC1234");
             v.setCor("Preto");
