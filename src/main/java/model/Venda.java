@@ -1,22 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-/**
- *
- * @author vanessalagomachado
- */
-public class Venda {
+@Entity
+@Table(name = "vendas")
+public class Venda implements Serializable{
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "dataVenda_id")
     private LocalDateTime dataVenda;
     private double valorVenda;
     private FormaContrato formaContrato;
     private FormaPgto formaPgto;
+    
+    @OneToMany
     private Cliente cliente;
+    
+    @OneToMany
     private Vendedor vendedor;
+    
+    @OneToOne
     private Veiculo veiculo;
 
     public LocalDateTime getDataVenda() {
